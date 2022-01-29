@@ -33,6 +33,11 @@
                        {% for user, transactions in data %}
                             {{ user.username}}  {{ transactions.amount}}
                             {{ transactions.id}} {{ transactions.trans_category}}
+                       {% endfor %}
+                       <br>  
+                       {% for cat, transactions in cat_data %}
+                            {{ cat.id }}  {{ cat.name}}
+                            
                        {% endfor %}        
                     </div>
                 </div>

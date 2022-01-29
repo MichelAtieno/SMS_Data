@@ -1,0 +1,24 @@
+
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+   <h1>{{ one_category.name }}</h>
+
+   <br>
+    {% for transaction in cat_queryset %}
+    {% if transaction.trans_category == one_category.id %}  
+            <p>{{ transaction.trans_category }}</p>
+            <p>{{ transaction.amount }}</p>
+            <p>{{ transaction.transacted }}</p>
+            <p>{{ transaction.user_id }}</p>
+
+        {% else %}
+            <p>NO TRANSACTIONS</p>
+         {% endif %}
+    {% endfor %}
+    
+
+{% endblock %}

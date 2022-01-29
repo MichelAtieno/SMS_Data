@@ -3,7 +3,7 @@ from manage import app
 from . import main
 from .. import db
 from .forms import TransactionForm
-from ..models import User, Transaction, user_schema, users_schema, transaction_schema, transactions_schema
+from ..models import User, Transaction, Category, user_schema, users_schema, transaction_schema, transactions_schema
 import os
 
 
@@ -11,14 +11,22 @@ import os
 def home():
     all_users = User.get_users()
     data = db.session.query(User, Transaction).join(Transaction).all()
+    cat_data = db.session.query(Category, Transaction).join(Transaction).all()
 
-    return render_template('index.html', all_users=all_users, data=data )
+    # all_categories = Transaction.objects.values('trans_category__name')
+    all_categories = Category.query.all()
 
-@main.route('/transaction/<int:id>')
-def transaction(id):
-    one_transaction = Transaction.get_transaction(id)
+    return render_template('index.html', all_users=all_users, data=data, cat_data=cat_data, all_categories=all_categories )
 
-    return render_template('transaction.html', one_transaction = one_transaction )
+
+@main.route("/cat/<int:id>")
+def category(id):
+    one_category = Category.query.get(id)
+    cat_queryset = Transaction.query.all()
+    
+
+
+    return render_template("category_profile.html", one_category=one_category, cat_queryset=cat_queryset)
 
 @main.route("/user", methods=["POST"])
 def add_user():
