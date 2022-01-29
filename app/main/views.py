@@ -14,12 +14,15 @@ def home():
 
     return render_template('index.html', all_users=all_users, data=data )
 
+@main.route('/transaction/<int:id>')
+def transaction(id):
+    one_transaction = Transaction.get_transaction(id)
+
+    return render_template('transaction.html', one_transaction = one_transaction )
 
 @main.route("/user", methods=["POST"])
 def add_user():
-    # form = TransactionForm()
-    # if form.validate_on_submit():
-
+   
     #Create a User
     username = request.json['username']
     phone_number = request.json['phone_number']

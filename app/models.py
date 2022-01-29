@@ -10,17 +10,11 @@ class Transaction(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     account_id = db.Column(db.Integer)
-    trans_category = db.Column(db.String)
     image_path = db.Column(db.String)
     amount = db.Column(db.Integer)
     transacted = db.Column(db.DateTime,default=datetime.utcnow)
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
-
-
-    def save_transaction(self):
-        db.session.add(self)
-        db.session.commit()
-
+    trans_category = db.Column(db.Integer,db.ForeignKey('category.id'))
 
 
     @classmethod
@@ -29,7 +23,7 @@ class Transaction(db.Model):
 
     @classmethod
     def get_transaction(cls,id):
-        transctions = Transaction.query.filter_by( account_id=id).all()
+        transactions = Transaction.query.filter_by( account_id=id).all()
         return transactions
 
     def __repr__(self):
@@ -48,10 +42,6 @@ class User(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255),index = True)
     phone_number = db.Column(db.String(255),unique = True,index = True)
-    role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
-    bio = db.Column(db.String(255))
-    profile_pic_path = db.Column(db.String())
-    pass_secure = db.Column(db.String(255))
 
     transactions = db.relationship('Transaction',backref = 'user',lazy = "dynamic")
 
@@ -67,15 +57,15 @@ class User(db.Model):
         self.phone_number = phone_number
         self.username = username
 
-class Role(db.Model):
-    __tablename__ = 'roles'
+class Category(db.Model):
+    __tablename__ = 'category'
 
     id = db.Column(db.Integer,primary_key = True)
     name = db.Column(db.String(255))
-    users = db.relationship('User',backref = 'role',lazy="dynamic")
+    trans_cat = db.relationship('Transaction',backref='cat',lazy="dynamic")
 
     def __repr__(self):
-        return f'User {self.name}'
+        return f"Category ('{self.name}', '{self.id}')"
 
 
 
