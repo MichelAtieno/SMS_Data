@@ -1,1 +1,37 @@
-<h1> Hello World </h1>
+{% extends 'base.html'%}
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% if title %}
+        <title> {{ title }}</title>
+        {% else %}
+        <title> Index page </title>
+        {% endif %}
+    </head>
+    <body>
+        {% block content %}
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <h1>Upload file</h1>
+                        <hr>
+
+                        <form action="/" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                               
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" name="account" id="account">
+                                    <label class="custom-file-label" for="account">Select File...</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Upload File</button>
+                        </form>
+                    
+                    </div>
+                </div>
+            </div>
+       
+        {% endblock %} 
+
+    </body>
+</html>
