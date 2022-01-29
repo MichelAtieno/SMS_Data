@@ -26,7 +26,14 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Upload File</button>
                         </form>
-                    
+                        </hr>
+                        {% for user in all_users %}
+                        <p> {{ user.username }} </p>
+                        {% endfor%}
+                       {% for user, transactions in data %}
+                            {{ user.username}}  {{ transactions.amount}}
+                            {{ transactions.id}} {{ transactions.trans_category}}
+                       {% endfor %}        
                     </div>
                 </div>
             </div>

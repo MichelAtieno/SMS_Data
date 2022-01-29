@@ -3,8 +3,16 @@ from manage import app
 from . import main
 from .. import db
 from .forms import TransactionForm
-from ..models import User, Transaction, user_schema, users_schema
+from ..models import User, Transaction, user_schema, users_schema, transaction_schema, transactions_schema
 import os
+
+
+@main.route("/")
+def home():
+    all_users = User.get_users()
+    data = db.session.query(User, Transaction).join(Transaction).all()
+
+    return render_template('index.html', all_users=all_users, data=data )
 
 
 @main.route("/user", methods=["POST"])
@@ -35,7 +43,7 @@ def add_transaction():
     db.session.add(transactions)
     db.session.commit()
 
-    return user_schema.jsonify(transactions)
+    return transaction_schema.jsonify(transactions)
     
     
     

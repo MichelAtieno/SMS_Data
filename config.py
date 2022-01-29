@@ -3,7 +3,7 @@ class Config:
     General configuration parent class
     '''
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://michel:mishy@localhost/sms_data'
-    SECRET_KEY = '<Flask WTF Secret Key>'
+    
 
 
 class ProdConfig(Config):

@@ -55,6 +55,11 @@ class User(db.Model):
 
     transactions = db.relationship('Transaction',backref = 'user',lazy = "dynamic")
 
+    @classmethod
+    def get_users(cls):
+        all_users = User.query.all()
+        return all_users
+
     def __repr__(self):
         return f"User ('{self.username}', '{self.phone_number}', '{self.id}')"
 
@@ -74,47 +79,6 @@ class Role(db.Model):
 
 
 
-
-# from . import db, ma
-# from marshmallow import Schema
-# from datetime import datetime
-     
-# class User(db.Model):
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     phone_number = db.Column(db.Integer)
-#     username = db.Column(db.String(100))
-
-#     transactions = db.relationship("Transaction", backref="account")
-  
-
-#     def __repr__(self):
-#         return f"User ('{self.username}', '{self.phone_number}', '{self.id}', '{self.transactions.account}')"
-
-#     def __init__(self, phone_number, username):
-#         self.phone_number = phone_number
-#         self.username = username
-
-
-# class Transaction(db.Model):
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     amount = db.Column(db.Integer)
-#     transacted = db.Column(db.DateTime,default=datetime.utcnow) 
-#     category = db.Column(db.String(100))
-
-#     account_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    
-#     def __repr__(self):
-#         return f"Transaction('{self.account_id}', '{self.amount}', '{self.category}', '{self.account_id}')"
-
-#     def __init__(self, amount, transacted, category, account_id):
-#         self.amount = amount
-#         self.transacted = transacted
-#         self.category = category
-#         self.account_id = account_id
-
-
 # #User Schema
 class UserSchema(ma.Schema):
     class Meta:
@@ -127,7 +91,7 @@ users_schema = UserSchema(many=True)
 #Transaction Schema
 class TransactionSchema(ma.Schema):
     class Meta:
-        fields = ("amount", "transacted", "category", "account_id")
+        fields = ("amount", "transacted", "trans_category", "user_id")
 
 #Init schema
 transaction_schema = TransactionSchema()
