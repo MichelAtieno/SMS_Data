@@ -10,29 +10,34 @@ import os
 @main.route("/")
 def home():
     all_users = User.get_users()
+    all_transactions = Transaction.query.all()
     data = db.session.query(User, Transaction).join(Transaction).all()
     cat_data = db.session.query(Category, Transaction).join(Transaction).all()
+   
 
     # all_categories = Transaction.objects.values('trans_category__name')
     all_categories = Category.query.all()
 
-    return render_template('index.html', all_users=all_users, data=data, cat_data=cat_data, all_categories=all_categories )
+    return render_template('index.html', all_users=all_users, all_transactions=all_transactions, data=data, cat_data=cat_data, all_categories=all_categories )
 
 
 @main.route("/cat/<int:id>")
 def category(id):
+    data = db.session.query(User, Transaction).join(Transaction).all()
+    cat_data = db.session.query(Category, Transaction).join(Transaction).all()
     one_category = Category.query.get(id)
-    cat_queryset = Transaction.query.all()
+    # cat_queryset = Transaction.query.all()
     
-    return render_template("category_profile.html", one_category=one_category, cat_queryset=cat_queryset)
+    return render_template("category_profile.html", data=data, cat_data=cat_data, one_category=one_category )
 
 @main.route("/profile/<int:id>")
 def user_profile(id):
+    data = db.session.query(User, Transaction).join(Transaction).all()
+    cat_data = db.session.query(Category, Transaction).join(Transaction).all()
     one_user = User.query.get(id)
-    one_category = Category.query.get(id)
-    user_queryset = Transaction.query.all()
+    # user_queryset = Transaction.query.all()
 
-    return render_template("user_profile.html", one_user=one_user,one_category=one_category, user_queryset=user_queryset)
+    return render_template("user_profile.html", data=data, cat_data=cat_data, one_user=one_user)
 
 
 

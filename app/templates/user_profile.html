@@ -8,16 +8,51 @@
    <h1>{{ one_user.username }}</h>
 
    <br>
-    {% for transaction in user_queryset %}
-    {% if transaction.user_id == one_user.id %}  
-            <p>{{ transaction.trans_category }}</p>
-            <p>{{ transaction.amount }}</p>
-            <p>{{ transaction.transacted }}</p>
-    
-        {% else %}
-            <p>NO TRANSACTIONS</p>
-         {% endif %}
-    {% endfor %}
+   
+
+    <div class="row my-4">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                <div class="scrollable">
+                    <table class="table bg-white">
+                        <thead class="bg-info">
+                            <tr class="text-white">
+                                <th scope="col">Category </th>
+                                <th scope="col">Amount </th>
+                                <th scope="col">Date </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            {% for user, transaction in cat_data %}
+                            {% if transaction.user_id == one_user.id %}
+                                {% for cat, transaction in cat_data%}
+                                {% if transaction.trans_category == cat.id %} 
+                                    <td><a href="{{url_for('main.category',id=cat.id)}}">{{ cat.name  }}</a></td>
+                                {% endif %}
+                                {% endfor %}
+                                    <td>{{ transaction.amount }}</td>
+                                    <td>{{ transaction.transacted }}</td>
+                                   
+
+                                {% else %}
+                                    <p>NO TRANSACTIONS</p>
+                                {% endif %}
+                            {% endfor %}
+                                
+                            </tr>
+                            
+                        
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-1">
+            </div>
+        </div>
     
 
 {% endblock %}

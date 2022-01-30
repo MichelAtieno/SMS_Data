@@ -8,17 +8,57 @@
    <h1>{{ one_category.name }}</h>
 
    <br>
-    {% for transaction in cat_queryset %}
-    {% if transaction.trans_category == one_category.id %}  
-            <p>{{ transaction.trans_category }}</p>
-            <p>{{ transaction.amount }}</p>
-            <p>{{ transaction.transacted }}</p>
-            <p>{{ transaction.user_id }}</p>
 
-        {% else %}
-            <p>NO TRANSACTIONS</p>
-         {% endif %}
-    {% endfor %}
+<div class="container">
+
+    <div class="row my-4">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                <div class="scrollable">
+                    <table class="table bg-white">
+                        <thead class="bg-info">
+                            <tr class="text-white">
+                                <th scope="col">Username </th>
+                                <th scope="col">Amount </th>
+                                <th scope="col">Date</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                       
+                          
+                            <tr>
+                            {% for category, transactions in cat_data %}
+                            {% if transactions.trans_category == one_category.id %}
+                                 {% for user, transactions in data %}
+                                    {% if user.id == transactions.user_id%}
+                                    <td><a href="{{url_for('main.user_profile',id=user.id)}}">{{ user.username }}</a></td>
+                                    {% endif %}
+                                 {% endfor %}
+                                <td>{{ transactions.amount }} </td>
+                                <td>{{ transactions.transacted }} </td>
+                                   
+                                {% else %}
+                                <p>No transactions</p>
+                            {% endif %}
+                            {% endfor %}
+                          
+                            </tr>
+
+                         
+                        
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-1">
+            </div>
+        </div>
     
+
+
+</div>
 
 {% endblock %}
