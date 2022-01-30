@@ -3,7 +3,7 @@ from manage import app
 from . import main
 from .. import db
 from .forms import TransactionForm
-from ..models import User, Transaction, Category, TransactionSchema
+from ..models import User, Transaction, Category, TransactionSchema, CategorySchema
 import os
 
 
@@ -39,6 +39,8 @@ def user_profile(id):
 
     return render_template("user_profile.html", one_user=one_user, user_queryset=user_queryset)
 
+
+
 @main.route("/transactions", methods=["GET"])
 def get_all_transactions():
     transactions = Transaction.get_all()
@@ -49,8 +51,6 @@ def get_all_transactions():
     return jsonify(
         data
     )
-
-
 
 @main.route("/transactions", methods=["GET"])
 def create_a_transaction():
@@ -74,15 +74,63 @@ def create_a_transaction():
 
 @main.route("/transaction/<int:id>", methods=["GET"])
 def get_transaction(id):
-    pass
+    transaction=Transaction.query.get(id)
 
-@main.route("/transaction/<int:id>", methods=["PUT"])
-def update_transaction(id):
-    pass
+    serializer = TransactionSchema()
+    data = serializer.dump(transaction)
 
-@main.route("/transaction/<int:id>", methods=["DELETE"])
-def delete_recipe(id):
-    pass
+    return jsonify(
+        data
+    ),200
+
+@main.route("/categories", methods=["GET"])
+def get_all_categories():
+    categories = Category.query.all()
+    
+    serializer = CategorySchema(many=True)
+    data = serializer.dump(categories)
+
+    return jsonify(
+        data
+    )
+
+@main.route("/categories", methods=["GET"])
+def create_a_category():
+    data=request.get_json()
+
+    new_category = Category(
+        name = data.get("name"),
+    )
+    new_category.save()
+    serializer = CategorySchema()
+    data = serializer.dump(new_category)
+
+    return jsonify(
+        data
+    ),201
+
+@main.route("/category/<int:id>", methods=["GET"])
+def get_category(id):
+    category=Category.query.get(id)
+    cat_queryset=Transaction.query.all()
+    
+
+    serializer = CategorySchema()
+    data = serializer.dump(category)
+
+    return jsonify(
+        data
+    ),200
+
+
+
+# @main.route("/transaction/<int:id>", methods=["PUT"])
+# def update_transaction(id):
+    
+
+# @main.route("/transaction/<int:id>", methods=["DELETE"])
+# def delete_transaction(id):
+#     pass
 
 
 

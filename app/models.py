@@ -83,6 +83,10 @@ class TransactionSchema(Schema):
     transacted = fields.String()
     user_id = fields.Integer()
 
+class CategorySchema(Schema):
+    id = fields.Integer()
+    name = fields.String()
+
 
 # # #User Schema
 # class UserSchema(ma.Schema):
