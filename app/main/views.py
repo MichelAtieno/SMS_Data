@@ -3,7 +3,7 @@ from manage import app
 from . import main
 from .. import db
 from .forms import TransactionForm
-from ..models import User, Transaction, Category, TransactionSchema, CategorySchema
+from ..models import User, Transaction, Category, TransactionSchema, CategorySchema, UserSchema
 import os
 
 
@@ -109,18 +109,34 @@ def create_a_category():
         data
     ),201
 
-@main.route("/category/<int:id>", methods=["GET"])
-def get_category(id):
-    category=Category.query.get(id)
-    cat_queryset=Transaction.query.all()
-    
+@main.route('/users', methods=["GET"])
+def get_user():
+   
+    all_users = User.query.all()
+    user_schema = UserSchema(many=True)
+    output = user_schema.dump(all_users)
+    return jsonify({'user': output})
 
-    serializer = CategorySchema()
-    data = serializer.dump(category)
+@main.route("/category", methods=["GET"])
+def get_category():
+    all_categories = Category.query.all()
+    category_schema = CategorySchema(many=True)
+    output = category_schema.dump(all_categories)
+    return jsonify({'category' : output})
 
-    return jsonify(
-        data
-    ),200
+
+
+#     # category=Category.query.get(id)
+#     # # cat_queryset=Transaction.query.all()
+#     # cat_data = db.session.query(Category, Transaction).join(Transaction).all()
+#     # serializer = CategorySchema()
+#     # data = serializer.dump(category)
+
+#     return jsonify(
+#         data
+#     ),200
+
+
 
 
 

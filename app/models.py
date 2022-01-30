@@ -5,6 +5,7 @@ from datetime import datetime
 from marshmallow import Schema, fields
 
 
+
 class Transaction(db.Model):
 
     __tablename__ = 'transactions'
@@ -82,11 +83,19 @@ class TransactionSchema(Schema):
     amount = fields.Integer()
     transacted = fields.String()
     user_id = fields.Integer()
+    trans_category = fields.Integer()
 
-class CategorySchema(Schema):
+class CategorySchema(ma.Schema):
     id = fields.Integer()
     name = fields.String()
+    trans_cat = fields.Nested(TransactionSchema, many=True)
 
+    
+class UserSchema(ma.Schema):
+    id = fields.Integer()
+    phone_number = fields.String()
+    username = fields.String()
+    transactions =  fields.Nested(TransactionSchema, many=True)
 
 # # #User Schema
 # class UserSchema(ma.Schema):
