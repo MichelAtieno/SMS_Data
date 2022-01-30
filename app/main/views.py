@@ -24,9 +24,17 @@ def category(id):
     one_category = Category.query.get(id)
     cat_queryset = Transaction.query.all()
     
-
-
     return render_template("category_profile.html", one_category=one_category, cat_queryset=cat_queryset)
+
+@main.route("/profile/<int:id>")
+def user_profile(id):
+    one_user = User.query.get(id)
+    one_category = Category.query.get(id)
+    user_queryset = Transaction.query.all()
+
+    return render_template("user_profile.html", one_user=one_user,one_category=one_category, user_queryset=user_queryset)
+
+
 
 @main.route("/user", methods=["POST"])
 def add_user():

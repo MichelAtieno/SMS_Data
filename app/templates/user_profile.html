@@ -1,0 +1,23 @@
+
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+   <h1>{{ one_user.username }}</h>
+
+   <br>
+    {% for transaction in user_queryset %}
+    {% if transaction.user_id == one_user.id %}  
+            <p>{{ transaction.trans_category }}</p>
+            <p>{{ transaction.amount }}</p>
+            <p>{{ transaction.transacted }}</p>
+    
+        {% else %}
+            <p>NO TRANSACTIONS</p>
+         {% endif %}
+    {% endfor %}
+    
+
+{% endblock %}
