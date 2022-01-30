@@ -3,7 +3,7 @@ from manage import app
 from . import main
 from .. import db
 from .forms import TransactionForm
-from ..models import User, Transaction, Category, user_schema, users_schema, transaction_schema, transactions_schema
+from ..models import User, Transaction, Category, TransactionSchema
 import os
 
 
@@ -23,51 +23,99 @@ def home():
 
 @main.route("/cat/<int:id>")
 def category(id):
-    data = db.session.query(User, Transaction).join(Transaction).all()
-    cat_data = db.session.query(Category, Transaction).join(Transaction).all()
+    # data = db.session.query(User, Transaction).join(Transaction).all()
+    # cat_data = db.session.query(Category, Transaction).join(Transaction).all()
     one_category = Category.query.get(id)
-    # cat_queryset = Transaction.query.all()
+    cat_queryset = Transaction.query.all()
     
-    return render_template("category_profile.html", data=data, cat_data=cat_data, one_category=one_category )
+    return render_template("category_profile.html", one_category=one_category, cat_queryset=cat_queryset )
 
 @main.route("/profile/<int:id>")
 def user_profile(id):
-    data = db.session.query(User, Transaction).join(Transaction).all()
-    cat_data = db.session.query(Category, Transaction).join(Transaction).all()
+    # data = db.session.query(User, Transaction).join(Transaction).all()
+    # cat_data = db.session.query(Category, Transaction).join(Transaction).all()
     one_user = User.query.get(id)
-    # user_queryset = Transaction.query.all()
+    user_queryset = Transaction.query.all()
 
-    return render_template("user_profile.html", data=data, cat_data=cat_data, one_user=one_user)
+    return render_template("user_profile.html", one_user=one_user, user_queryset=user_queryset)
+
+@main.route("/transactions", methods=["GET"])
+def get_all_transactions():
+    transactions = Transaction.get_all()
+    
+    serializer = TransactionSchema(many=True)
+    data = serializer.dump(transactions)
+
+    return jsonify(
+        data
+    )
 
 
 
-@main.route("/user", methods=["POST"])
-def add_user():
+@main.route("/transactions", methods=["GET"])
+def create_a_transaction():
+    data=request.get_json()
+
+    new_transaction = Transaction(
+        amount = data.get("amount"),
+        transacted = data.get("transacted"),
+        trans_category = data.get("trans_category"),
+        user_id = data.get("user_id")
+    )
+    new_transaction.save()
+    serializer = TransactionSchema()
+    data = serializer.dump(new_transaction)
+
+    return jsonify(
+        data
+    ),201
+
+
+
+@main.route("/transaction/<int:id>", methods=["GET"])
+def get_transaction(id):
+    pass
+
+@main.route("/transaction/<int:id>", methods=["PUT"])
+def update_transaction(id):
+    pass
+
+@main.route("/transaction/<int:id>", methods=["DELETE"])
+def delete_recipe(id):
+    pass
+
+
+
+
+
+
+# @main.route("/user", methods=["POST"])
+# def add_user():
    
-    #Create a User
-    username = request.json['username']
-    phone_number = request.json['phone_number']
+#     #Create a User
+#     username = request.json['username']
+#     phone_number = request.json['phone_number']
 
-    users = User(username, phone_number)
-    db.session.add(users)
-    db.session.commit()
+#     users = User(username, phone_number)
+#     db.session.add(users)
+#     db.session.commit()
 
-    return user_schema.jsonify(users)
+#     return user_schema.jsonify(users)
 
-@main.route("/transaction", methods=["POST"])
-def add_transaction():
+# @main.route("/transaction", methods=["POST"])
+# def add_transaction():
 
-    #Create a Transaction
-    amount = request.json['amount']
-    transacted =request.json['transacted']
-    trans_category = request.json['trans_category']
-    user_id = request.json['user_id']
+#     #Create a Transaction
+#     amount = request.json['amount']
+#     transacted =request.json['transacted']
+#     trans_category = request.json['trans_category']
+#     user_id = request.json['user_id']
 
-    transactions = Transaction(amount, transacted, trans_category, user_id)
-    db.session.add(transactions)
-    db.session.commit()
+#     transactions = Transaction(amount, transacted, trans_category, user_id)
+#     db.session.add(transactions)
+#     db.session.commit()
 
-    return transaction_schema.jsonify(transactions)
+#     return transaction_schema.jsonify(transactions)
     
     
     

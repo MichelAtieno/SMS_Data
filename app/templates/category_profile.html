@@ -27,24 +27,16 @@
                         </thead>
                         <tbody>
                        
-                          
-                            <tr>
-                            {% for category, transactions in cat_data %}
+                            {% for transactions in cat_queryset %}
                             {% if transactions.trans_category == one_category.id %}
-                                 {% for user, transactions in data %}
-                                    {% if user.id == transactions.user_id%}
-                                    <td><a href="{{url_for('main.user_profile',id=user.id)}}">{{ user.username }}</a></td>
-                                    {% endif %}
-                                 {% endfor %}
+                            <tr>
+                                <td><a href="{{url_for('main.user_profile',id=transactions.user.id)}}">{{ transactions.user.username }}</a></td> 
                                 <td>{{ transactions.amount }} </td>
                                 <td>{{ transactions.transacted }} </td>
-                                   
-                                {% else %}
-                                <p>No transactions</p>
+                            </tr>
+                           
                             {% endif %}
                             {% endfor %}
-                          
-                            </tr>
 
                          
                         

@@ -2,6 +2,7 @@ from . import db, ma
 # from werkzeug.security import generate_password_hash,check_password_hash
 # from flask_login import UserMixin
 from datetime import datetime
+from marshmallow import Schema, fields
 
 
 class Transaction(db.Model):
@@ -26,6 +27,10 @@ class Transaction(db.Model):
         transactions = Transaction.query.filter_by( account_id=id).all()
         return transactions
 
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
+
     def __repr__(self):
         return f"Transaction('{self.transacted}', '{self.amount}', '{self.trans_category}', '{self.user_id}')"
 
@@ -34,6 +39,10 @@ class Transaction(db.Model):
         self.transacted = transacted
         self.trans_category = trans_category
         self.user_id = user_id
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
 
 class User(db.Model):
@@ -67,22 +76,28 @@ class Category(db.Model):
     def __repr__(self):
         return f"Category ('{self.name}', '{self.id}')"
 
-
-
-# #User Schema
-class UserSchema(ma.Schema):
-    class Meta:
-        fields = ("id", "phone_number", "username")
-
-#Init schema
-user_schema = UserSchema()
-users_schema = UserSchema(many=True)
-
 #Transaction Schema
-class TransactionSchema(ma.Schema):
-    class Meta:
-        fields = ("amount", "transacted", "trans_category", "user_id")
+class TransactionSchema(Schema):
+    id = fields.Integer()
+    amount = fields.Integer()
+    transacted = fields.String()
+    user_id = fields.Integer()
 
-#Init schema
-transaction_schema = TransactionSchema()
-transactions_schema = TransactionSchema(many=True)
+
+# # #User Schema
+# class UserSchema(ma.Schema):
+#     class Meta:
+#         fields = ("id", "phone_number", "username")
+
+# #Init schema
+# user_schema = UserSchema()
+# users_schema = UserSchema(many=True)
+
+# #Transaction Schema
+# class TransactionSchema(ma.Schema):
+#     class Meta:
+#         fields = ("amount", "transacted", "trans_category", "user_id")
+
+# #Init schema
+# transaction_schema = TransactionSchema()
+# transactions_schema = TransactionSchema(many=True)

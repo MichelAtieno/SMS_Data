@@ -70,18 +70,17 @@
                            
                             <tr>
                                 <td>{{ account.id }} </td>
-                                {% for user, account in data %}
-                                {% if account.user_id == user.id %}
-                                     <td><a href="{{url_for('main.user_profile',id=user.id)}}">{{ user.username }}</a></td>
-                                {% endif %}
-                                {% endfor %}
+                                <td>
+                                    
+                                    <a href="{{url_for('main.user_profile',id=account.user.id)}}">{{ account.user.username  }}</a>
+                               
+                                </td>
                                 <td>{{ account.transacted }} </td>
                                 <td>{{ account.amount }} </td>
-                                {% for cat, account in cat_data %}
-                                {% if account.trans_category == cat.id %}
-                                     <td><a href="{{url_for('main.category',id=cat.id)}}">{{ cat.name }}</a></td>
-                                {% endif %}
-                                {% endfor %}
+                                <td>
+                                  <a href="{{url_for('main.category',id=account.cat.id)}}">{{ account.cat.name }}</a>
+                        
+                                </td>
 
                            
                             </tr>
