@@ -18,8 +18,10 @@ class Transaction(db.Model):
     image_path = db.Column(db.String)
     amount = db.Column(db.Integer)
     transacted = db.Column(db.DateTime,default=datetime.utcnow)
+
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     trans_category = db.Column(db.Integer,db.ForeignKey('category.id'))
+   
 
 
     @classmethod
@@ -56,7 +58,9 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(255),index = True)
     phone_number = db.Column(db.String(255),unique = True,index = True)
     password_hash = db.Column(db.String(255))
-    transactions = db.relationship('Transaction',backref = 'user',lazy = "dynamic")
+
+    user_transactions = db.relationship('Transaction',backref = 'user',lazy = "dynamic")
+    
 
 
     @property
@@ -78,7 +82,7 @@ class User(UserMixin, db.Model):
 
     
     def __repr__(self):
-        return f"User ('{self.username}', '{self.phone_number}', '{self.id}')"
+        return f'{self.id}'
 
     def __init__(self, phone_number, username, password):
         self.phone_number = phone_number
@@ -91,9 +95,10 @@ class Category(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     name = db.Column(db.String(255))
     trans_cat = db.relationship('Transaction',backref='cat',lazy="dynamic")
+    
 
     def __repr__(self):
-        return f"Category ('{self.name}', '{self.id}')"
+        return f'{self.id}'
 
 #Transaction Schema
 class TransactionSchema(Schema):
@@ -113,7 +118,7 @@ class UserSchema(ma.Schema):
     id = fields.Integer()
     phone_number = fields.String()
     username = fields.String()
-    transactions =  fields.Nested(TransactionSchema, many=True)
+    user_transactions =  fields.Nested(TransactionSchema, many=True)
 
 # # #User Schema
 # class UserSchema(ma.Schema):

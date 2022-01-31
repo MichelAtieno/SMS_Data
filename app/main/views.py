@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, jsonify
+from flask import render_template, request, redirect, jsonify, url_for
 from flask_login import login_user,logout_user,login_required
 from manage import app
 from . import main
@@ -8,7 +8,7 @@ from ..models import User, Transaction, Category, TransactionSchema, CategorySch
 import os
 
 
-@main.route("/")
+@main.route("/",methods=["GET", "POST"])
 @login_required
 def home():
     all_users = User.get_users()
@@ -17,8 +17,25 @@ def home():
     cat_data = db.session.query(Category, Transaction).join(Transaction).all()
     # all_categories = Transaction.objects.values('trans_category__name')
     all_categories = Category.query.all()
+    
 
-    return render_template('index.html', all_users=all_users, all_transactions=all_transactions, data=data, cat_data=cat_data, all_categories=all_categories )
+    # form = TransactionForm()
+    # categories = [(c.id, c.name) for c in Category.query.all()]
+    # users = [(b.id, b.username) for b in User.query.all()]
+    # categories = form.trans_category.choices 
+    # users = form.user_id.choices
+   
+    # if form.validate_on_submit():
+    #     new_transaction = Transaction(
+    #         amount = form.amount.data,
+    #         transacted = form.transacted.data,
+    #         trans_category_id = form.trans_category.data,
+    #         user_id_id = form.user_id.data )
+    #     db.session.add(new_transaction)
+    #     db.session.commit()
+    #     return redirect(url_for('main.home'))
+
+    return render_template('index.html', all_users=all_users, all_transactions=all_transactions, data=data, cat_data=cat_data, all_categories=all_categories)
 
 
 @main.route("/cat/<int:id>")
@@ -41,6 +58,23 @@ def user_profile(id):
 
     return render_template("user_profile.html", one_user=one_user, user_queryset=user_queryset)
 
+@main.route("/transactions", methods=[ "POST"])
+@login_required
+def create_a_transaction():
+    data=request.get_json()
+    new_transaction = Transaction(
+        amount = data.get("amount"),
+        transacted = data.get("transacted"),
+        trans_category = data.get("trans_category"),
+        user_id = data.get("user_id")
+        )
+    new_transaction.save()    
+    serializer = TransactionSchema()
+    data = serializer.dump(new_transaction)
+    return jsonify(
+        data
+    ),201
+
 
 
 @main.route("/transactions", methods=["GET"])
@@ -52,25 +86,6 @@ def get_all_transactions():
     return jsonify(
         data
     )
-
-@main.route("/transactions", methods=["POST"])
-@login_required
-def create_a_transaction():
-    data=request.get_json()
-    new_transaction = Transaction(
-        amount = data.get("amount"),
-        transacted = data.get("transacted"),
-        trans_category = data.get("trans_category"),
-        user_id = data.get("user_id")
-    )
-    new_transaction.save()
-    serializer = TransactionSchema()
-    data = serializer.dump(new_transaction)
-    return jsonify(
-        data
-    ),201
-
-
 
 @main.route("/transaction/<int:id>", methods=["GET"])
 @login_required
