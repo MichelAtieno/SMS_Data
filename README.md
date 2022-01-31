@@ -18,13 +18,13 @@ You can view project on https://sms-data.herokuapp.com/
     <li>The project has a registration page, whereby a user can create an account. After registering an account, the user can log in to the dashboard and will have access to dashboard. </li>
     <li>The User can view transactions and different categories, with information categorized on home page.</li>
     <li>Dfferent routes for API include:
-        1. /transactions - view all transactions
-        2. /transactions/<int:id> - view transaction with assigned id
-        3. /categories - view all categories
-        4. /cat/<int:id> - view category with assigned id
-        5. /users - view all users
-        6. /user/<int:id> - view user with assigned id
-         </li>
+        - /transactions - view all transactions
+        - /transactions/<int:id> - view transaction with assigned id
+        - /categories - view all categories
+        - /cat/<int:id> - view category with assigned id
+        - /users - view all users
+        - /user/<int:id> - view user with assigned id
+    </li>
     <li>With a user account, one can access different pages by clicking on links.</li>
 </ol>
 
