@@ -4,7 +4,7 @@ class Config:
     '''
     General configuration parent class
     '''
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://michel:mishy@localhost/sms_data:5432/postgres'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://michel:mishy@localhost/sms_data'
     SECRET_KEY = "mishatieno23"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -16,7 +16,7 @@ class ProdConfig(Config):
     Args:
         Config: The parent configuration class with General configuration settings
     '''
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql+psycopg2://michel:mishy@localhost/sms_data:5432/postgres'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql+psycopg2://michel:mishy@localhost/sms_data'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
 
@@ -28,7 +28,7 @@ class DevConfig(Config):
     Args:
         Config: The parent configuration class with General configuration settings
     '''
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://michel:mishy@localhost/sms_data:5432/postgres'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://michel:mishy@localhost/sms_data'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     DEBUG = True
