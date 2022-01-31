@@ -1,10 +1,13 @@
 from . import db, ma
-# from werkzeug.security import generate_password_hash,check_password_hash
-# from flask_login import UserMixin
+from werkzeug.security import generate_password_hash,check_password_hash
+from flask_login import UserMixin
 from datetime import datetime
 from marshmallow import Schema, fields
+from . import login_manager
 
-
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 class Transaction(db.Model):
 
@@ -46,26 +49,41 @@ class Transaction(db.Model):
         db.session.commit()
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255),index = True)
     phone_number = db.Column(db.String(255),unique = True,index = True)
-
+    password_hash = db.Column(db.String(255))
     transactions = db.relationship('Transaction',backref = 'user',lazy = "dynamic")
+
+
+    @property
+    def password(self):
+        raise AttributeError('You cannot read the password attribute')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+
+    def verify_password(self,password):
+        return check_password_hash(self.password_hash,password)
 
     @classmethod
     def get_users(cls):
         all_users = User.query.all()
         return all_users
 
+    
     def __repr__(self):
         return f"User ('{self.username}', '{self.phone_number}', '{self.id}')"
 
-    def __init__(self, phone_number, username):
+    def __init__(self, phone_number, username, password):
         self.phone_number = phone_number
         self.username = username
+        self.password = password
 
 class Category(db.Model):
     __tablename__ = 'category'

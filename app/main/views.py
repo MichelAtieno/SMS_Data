@@ -1,4 +1,5 @@
 from flask import render_template, request, redirect, jsonify
+from flask_login import login_user,logout_user,login_required
 from manage import app
 from . import main
 from .. import db
@@ -8,13 +9,12 @@ import os
 
 
 @main.route("/")
+@login_required
 def home():
     all_users = User.get_users()
     all_transactions = Transaction.query.all()
     data = db.session.query(User, Transaction).join(Transaction).all()
     cat_data = db.session.query(Category, Transaction).join(Transaction).all()
-   
-
     # all_categories = Transaction.objects.values('trans_category__name')
     all_categories = Category.query.all()
 
@@ -22,6 +22,7 @@ def home():
 
 
 @main.route("/cat/<int:id>")
+@login_required
 def category(id):
     # data = db.session.query(User, Transaction).join(Transaction).all()
     # cat_data = db.session.query(Category, Transaction).join(Transaction).all()
@@ -31,6 +32,7 @@ def category(id):
     return render_template("category_profile.html", one_category=one_category, cat_queryset=cat_queryset )
 
 @main.route("/profile/<int:id>")
+@login_required
 def user_profile(id):
     # data = db.session.query(User, Transaction).join(Transaction).all()
     # cat_data = db.session.query(Category, Transaction).join(Transaction).all()
@@ -42,20 +44,19 @@ def user_profile(id):
 
 
 @main.route("/transactions", methods=["GET"])
+@login_required
 def get_all_transactions():
     transactions = Transaction.get_all()
-    
     serializer = TransactionSchema(many=True)
     data = serializer.dump(transactions)
-
     return jsonify(
         data
     )
 
-@main.route("/transactions", methods=["GET"])
+@main.route("/transactions", methods=["POST"])
+@login_required
 def create_a_transaction():
     data=request.get_json()
-
     new_transaction = Transaction(
         amount = data.get("amount"),
         transacted = data.get("transacted"),
@@ -65,7 +66,6 @@ def create_a_transaction():
     new_transaction.save()
     serializer = TransactionSchema()
     data = serializer.dump(new_transaction)
-
     return jsonify(
         data
     ),201
@@ -73,56 +73,79 @@ def create_a_transaction():
 
 
 @main.route("/transaction/<int:id>", methods=["GET"])
+@login_required
 def get_transaction(id):
     transaction=Transaction.query.get(id)
-
     serializer = TransactionSchema()
     data = serializer.dump(transaction)
-
     return jsonify(
         data
     ),200
 
 @main.route("/categories", methods=["GET"])
+@login_required
 def get_all_categories():
     categories = Category.query.all()
-    
     serializer = CategorySchema(many=True)
     data = serializer.dump(categories)
-
     return jsonify(
         data
     )
 
-@main.route("/categories", methods=["GET"])
+@main.route("/categories", methods=["POST"])
+@login_required
 def create_a_category():
     data=request.get_json()
-
     new_category = Category(
         name = data.get("name"),
     )
     new_category.save()
     serializer = CategorySchema()
     data = serializer.dump(new_category)
-
     return jsonify(
         data
     ),201
 
+@main.route("/category/<int:id>", methods=["GET"])
+@login_required
+def get_category(id):
+    one_category = Category.query.get(id)
+    category_schema = CategorySchema()
+    output = category_schema.dump(one_category)
+    return jsonify({'category' : output})
+
 @main.route('/users', methods=["GET"])
-def get_user():
-   
+@login_required
+def get_users():
     all_users = User.query.all()
     user_schema = UserSchema(many=True)
     output = user_schema.dump(all_users)
     return jsonify({'user': output})
 
-@main.route("/category", methods=["GET"])
-def get_category():
-    all_categories = Category.query.all()
-    category_schema = CategorySchema(many=True)
-    output = category_schema.dump(all_categories)
-    return jsonify({'category' : output})
+@main.route("/user/<int:id>", methods=["GET"])
+@login_required
+def get_user(id):
+    one_user = User.query.get(id)
+    user_schema = UserSchema()
+    output = user_schema.dump(one_user)
+    return jsonify({'user' : output})
+
+@main.route("/users", methods=["POST"])
+@login_required
+def create_a_user():
+    data=request.get_json()
+    new_user = User(
+        username = data.get("username"),
+    )
+    new_user.save()
+    serializer = UserSchema()
+    data = serializer.dump(new_user)
+    return jsonify(
+        data
+    ),201
+
+
+
 
 
 
