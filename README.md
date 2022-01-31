@@ -17,16 +17,15 @@ You can view project on https://sms-data.herokuapp.com/
 <ol>
     <li>The project has a registration page, whereby a user can create an account. After registering an account, the user can log in to the dashboard and will have access to dashboard. </li>
     <li>The User can view transactions and different categories, with information categorized on home page.</li>
-    <li>Dfferent routes for API include:
-        - /transactions - view all transactions
-        - /transactions/<int:id> - view transaction with assigned id
-        - /categories - view all categories
-        - /cat/<int:id> - view category with assigned id
-        - /users - view all users
-        - /user/<int:id> - view user with assigned id
-    </li>
-    <li>With a user account, one can access different pages by clicking on links.</li>
 </ol>
+
+### API routes
+    - /transactions - view all transactions
+    - /transactions/<int:id> - view transaction with assigned id
+    - /categories - view all categories
+    - /cat/<int:id> - view category with assigned id
+    - /users - view all users
+    - /user/<int:id> - view user with assigned id
 
 
 
@@ -36,12 +35,12 @@ You can view project on https://sms-data.herokuapp.com/
         - Python 3.7.1
         - Ubuntu software           
 
-## Known bugs
+###  Known bugs
 Working on different api routes.
 Work in progress.....
 
 
-## Technologies used
+### Technologies used
     - Python 3.7.12 (Flask Framework)
     - Bootstrap
     - Heroku
