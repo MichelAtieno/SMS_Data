@@ -4,6 +4,8 @@ from flask_login import UserMixin
 from datetime import datetime
 from marshmallow import Schema, fields
 from . import login_manager
+from sqlalchemy_utils import PhoneNumber
+
 
 @login_manager.user_loader
 def load_user(user_id):
