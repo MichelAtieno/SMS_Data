@@ -1,8 +1,8 @@
 from flask import render_template, request, redirect, jsonify, url_for, flash, session
-from flask_login import login_user,logout_user,login_required
+from flask_login import login_user,logout_user,login_required, current_user 
 from . import main
 from .. import db
-from .forms import TransactionForm, CategoryForm
+from .forms import NewTransactionForm, TransactionForm, CategoryForm
 from ..models import User, Transaction, Category, TransactionSchema, CategorySchema, UserSchema
 import os
 from datetime import datetime
@@ -18,7 +18,20 @@ def home():
     cat_data = db.session.query(Category, Transaction).join(Transaction).all()
     # all_categories = Transaction.objects.values('trans_category__name')
     all_categories = Category.query.all()
-    
+
+
+    # new_trans_form = NewTransactionForm()
+    # if new_trans_form.validate_on_submit():
+    #     Transaction.transaction_new_entry(
+    #         amount = new_trans_form.amount.data,
+    #         trans_category = new_trans_form.trans_category.data,
+    #         transacted = new_trans_form.transacted.data,
+    #         user_id=current_user.id
+           
+    #     )
+    #     print(type(user_id))
+    #     flash('New Transaction Created')
+    #     return redirect(url_for('main.home') )
 
     form = TransactionForm()
     if form.validate_on_submit():
@@ -42,20 +55,7 @@ def home():
         session['starting_date'] = startingdate
         session['ending_date'] = endingdate
         
-        
-
         return redirect(url_for('main.get_category_by_date', startingdate=startingdate, endingdate=endingdate, category=category, transactions=date_transactions, id=category.id))
-
-    # if form.validate_on_submit():
-    #     new_transaction = Transaction(
-    #         amount = form.amount.data,
-    #         transacted = form.transacted.data,
-    #         trans_category = form.trans_category.data,
-    #         user_id= form.user_id.data )
-    #     db.session.add(new_transaction)
-    #     db.session.commit()
-    #     return redirect(url_for('main.home'))
-    # flash('New Transaction Created')
 
     return render_template('index.html', all_users=all_users, all_transactions=all_transactions, data=data, cat_data=cat_data, all_categories=all_categories, form=form, cat_form=cat_form)
 
@@ -64,12 +64,8 @@ def home():
 @login_required
 def get_transaction_by_date(enddate, firstdate, transactions):
     firstdate = session.get('first_date')
-    
     enddate = session.get('end_date')
-   
     transactions = Transaction.query.filter(Transaction.transacted.between(firstdate, enddate)).all()
-    
-    
 
     return render_template('date_transacted.html', firstdate=firstdate, enddate=enddate, transactions=transactions)
 
@@ -81,7 +77,6 @@ def get_category_by_date(startingdate, endingdate, id):
     transactions = Transaction.query.filter(Transaction.transacted.between(startingdate, endingdate)).all()
     category = Category.query.get(id)
   
-
     return render_template('date_category.html', startingdate=startingdate, endingdate=endingdate, transactions=transactions, category=category )
 
 

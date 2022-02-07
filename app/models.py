@@ -39,6 +39,14 @@ class Transaction(db.Model):
     def get_all(cls):
         return cls.query.all()
 
+    @staticmethod
+    def transaction_new_entry( amount, transacted, trans_category, user_id):
+        """ Post new entry to database """
+        new_transaction = Transaction(amount=amount, transacted=transacted, trans_category=trans_category, user_id=user_id)
+        db.session.add(new_transaction)
+        db.session.commit()
+        return new_transaction
+
     def __repr__(self):
         return f"Transaction('{self.transacted}', '{self.amount}', '{self.trans_category}', '{self.user_id}')"
 
@@ -48,9 +56,7 @@ class Transaction(db.Model):
         self.trans_category = trans_category
         self.user_id = user_id
 
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
+    
 
 
 class User(UserMixin, db.Model):
@@ -84,7 +90,7 @@ class User(UserMixin, db.Model):
 
     
     def __repr__(self):
-        return f'{self.id}'
+        return f'{self.username}'
 
     def __init__(self, phone_number, username, password):
         self.phone_number = phone_number
@@ -100,7 +106,7 @@ class Category(db.Model):
     
 
     def __repr__(self):
-        return f'{self.id}'
+        return f'{self.name}'
 
 #Transaction Schema
 class TransactionSchema(Schema):
