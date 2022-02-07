@@ -5,8 +5,8 @@ from wtforms.validators import Required, DataRequired
 from wtforms_sqlalchemy.fields import QuerySelectField
 from ..models import User, Transaction, Category
 
-# def category_query():
-#     return Category.query
+def category_query():
+    return Category.query
 
 # def user_query():
 #     return User.query
@@ -24,4 +24,10 @@ from ..models import User, Transaction, Category
 class TransactionForm(FlaskForm):
     startdate = DateField('Start Date', format='%Y-%m-%d', validators=(validators.DataRequired(),))
     enddate = DateField('End Date', format='%Y-%m-%d', validators=(validators.DataRequired(),))
+    submit = SubmitField('Submit')
+
+class CategoryForm(FlaskForm):
+    startingdate = DateField('Start Date', format='%Y-%m-%d', validators=(validators.DataRequired(),))
+    endingdate = DateField('End Date', format='%Y-%m-%d', validators=(validators.DataRequired(),))
+    trans_category = QuerySelectField("Category", query_factory=category_query ,validators=[Required()])
     submit = SubmitField('Submit')

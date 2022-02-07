@@ -18,7 +18,7 @@
         <div class="row my-4">
             <div class="col-md-3">
 
-                <h3>Select a date range</h3>
+                <h3>Select a date range for transactions</h3>
 
                 <form action="" method="POST" name="myform">
                     {{ form.csrf_token }}
@@ -34,7 +34,26 @@
                
                
             </div>
-            <div class="col-md-9">
+            <div class="col-md-3">
+
+                <h3>Select a date range for categories</h3>
+
+                <form action="" method="POST" name="categoryform">
+                    {{ cat_form.csrf_token }}
+                    {{ cat_form.startingdate.label }} {{ cat_form.startingdate(class='datepicker') }} {{ cat_form.hidden_tag() }}
+                    {{ cat_form.endingdate.label }} {{ cat_form.endingdate(class='datepicker') }} {{ cat_form.hidden_tag() }}
+                    {{ cat_form.trans_category }}
+                <p>
+                    {{ cat_form.submit() }}
+                <p>
+                </form>
+
+
+
+               
+               
+            </div>
+            <div class="col-md-6">
                 <div class="scrollable">
                     <table class="table bg-white">
                         <thead class="bg-info">

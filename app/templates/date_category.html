@@ -2,13 +2,14 @@
 
 {% block content %}
     <h2>Result Dates</h2>
-    <p>Start Date: {{ firstdate}}</p>
-    <p>End Date: {{ enddate }}</p>
+    <p>Start Date: {{ startingdate}}</p>
+    <p>End Date: {{ endingdate }}</p>
     {% for transaction in transactions %}
-   
+    {% if transaction.cat.id == category.id %}
         <h4>Amount: {{ transaction.amount }} </h4>
         <h4>Category:  {{ transaction.cat.name }} </h4>
         <h4>Username: {{ transaction.user.username }}</h4>
         <h4>Date of Transaction: {{ transaction.transacted }} </h4>
+    {% endif %}
     {% endfor %}
 {% endblock %}
