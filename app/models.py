@@ -1,7 +1,7 @@
 from . import db, ma
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from marshmallow import Schema, fields
 from . import login_manager
 from sqlalchemy_utils import PhoneNumber
@@ -19,7 +19,7 @@ class Transaction(db.Model):
     account_id = db.Column(db.Integer)
     image_path = db.Column(db.String)
     amount = db.Column(db.Integer)
-    transacted = db.Column(db.DateTime,default=datetime.utcnow)
+    transacted = db.Column(db.Date)
 
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     trans_category = db.Column(db.Integer,db.ForeignKey('category.id'))

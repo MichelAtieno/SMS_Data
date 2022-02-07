@@ -1,10 +1,12 @@
-from flask import render_template, request, redirect, jsonify, url_for
+from flask import render_template, request, redirect, jsonify, url_for, flash, session
 from flask_login import login_user,logout_user,login_required
 from . import main
 from .. import db
 from .forms import TransactionForm
 from ..models import User, Transaction, Category, TransactionSchema, CategorySchema, UserSchema
 import os
+from datetime import datetime
+
 
 
 @main.route("/",methods=["GET", "POST"])
@@ -18,24 +20,44 @@ def home():
     all_categories = Category.query.all()
     
 
-    # form = TransactionForm()
-    # categories = [(c.id, c.name) for c in Category.query.all()]
-    # users = [(b.id, b.username) for b in User.query.all()]
-    # categories = form.trans_category.choices 
-    # users = form.user_id.choices
-   
+    form = TransactionForm()
+    if form.validate_on_submit():
+        firstdate = form.startdate.data
+        enddate = form.enddate.data
+        date_transactions = Transaction.query.filter(Transaction.transacted.between(firstdate, enddate)).all()
+        
+
+        session['first_date'] = firstdate
+        session['end_date'] = enddate
+
+        return redirect(url_for('main.get_transaction_by_date', firstdate=firstdate, enddate=enddate, transactions=date_transactions))
+        
+
     # if form.validate_on_submit():
     #     new_transaction = Transaction(
     #         amount = form.amount.data,
     #         transacted = form.transacted.data,
-    #         trans_category_id = form.trans_category.data,
-    #         user_id_id = form.user_id.data )
+    #         trans_category = form.trans_category.data,
+    #         user_id= form.user_id.data )
     #     db.session.add(new_transaction)
     #     db.session.commit()
     #     return redirect(url_for('main.home'))
+    # flash('New Transaction Created')
 
-    return render_template('index.html', all_users=all_users, all_transactions=all_transactions, data=data, cat_data=cat_data, all_categories=all_categories)
+    return render_template('index.html', all_users=all_users, all_transactions=all_transactions, data=data, cat_data=cat_data, all_categories=all_categories, form=form)
 
+
+@main.route("/date/<enddate>&<firstdate>&<transactions>", methods=["GET"])
+def get_transaction_by_date(enddate, firstdate, transactions):
+    firstdate = session.get('first_date')
+    print(firstdate)
+    enddate = session.get('end_date')
+    print(enddate)
+    transactions = Transaction.query.filter(Transaction.transacted.between(firstdate, enddate)).all()
+    print(transactions)
+    
+
+    return render_template('date_transacted.html', firstdate=firstdate, enddate=enddate, transactions=transactions)
 
 @main.route("/cat/<int:id>")
 @login_required
@@ -85,6 +107,8 @@ def get_all_transactions():
     return jsonify(
         data
     )
+
+
 
 @main.route("/transaction/<int:id>", methods=["GET"])
 @login_required

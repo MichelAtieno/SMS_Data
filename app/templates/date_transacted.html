@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Result Dates</h2>
+    <p>Start Date: {{ firstdate}}</p>
+    <p>End Date: {{ enddate }}</p>
+    {% for transaction in transactions %}
+   
+        <h4>Amount: {{ transaction.amount }} </h4>
+        <h4>Category:  {{ transaction.trans_category }} </h4>
+        <h4>Username: {{ transaction.user.username }}</h4>
+        <h4>Date of Transaction: {{ transaction.transacted }} </h4>
+    {% endfor %}
+{% endblock %}
