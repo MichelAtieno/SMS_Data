@@ -9,26 +9,23 @@ You can view project on https://sms-data.herokuapp.com/
 <ul>
     <li>Sign in to the application. Register an account with a phone number, username and password. Login to view the dashboard.</li>
     <li>You can view transactions of every user in the database.</li>
-    <li>You can also view the API; given the routes in the description</li>
+    <li>You can view the API; given the routes in the description</li>
 <ul>
 
-### Behaviors
+### Website Routes
+    - /profile/<int:id> - User profile showing transactions related to particular user
+    - /cat/<int:id> - Category profile showing transactions related to particular category
+    - /date/<enddate>&<firstdate>&<transactions> - Once you submit the form on home page for querying transactions for particular period of time, you will be redirected to this page that displays transactions per selected period of time.
+    - /category/<startingdate>&<endingdate>&<int:id> - Once you submit the form on home page for querying categories for  a particular period of time, you will be redirected to this page that displays transactions per category per selected period of time.
 
-<ol>
-    <li>The project has a registration page, whereby a user can create an account. After registering an account, the user can log in to the dashboard and will have access to dashboard. </li>
-    <li>The User can view transactions and different categories, with information categorized on home page.</li>
-</ol>
 
 ### API routes
     - /transactions - view all transactions
     - /transactions/<int:id> - view transaction with assigned id
     - /categories - view all categories
-    - /cat/<int:id> - view category with assigned id
+    - /category/<int:id> - view category with assigned id
     - /users - view all users
     - /user/<int:id> - view user with assigned id
-
-
-
 
 ## Set-up and Installation
 ###     Prerequisites
@@ -36,7 +33,6 @@ You can view project on https://sms-data.herokuapp.com/
         - Ubuntu software           
 
 ###  Known bugs
-Working on different api routes.
 Work in progress.....
 
 
