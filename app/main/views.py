@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, jsonify, url_for, flash, s
 from flask_login import login_user,logout_user,login_required, current_user 
 from . import main
 from .. import db
-from .forms import NewTransactionForm, TransactionForm, CategoryForm
+from .forms import TransactionForm, CategoryForm
 from ..models import User, Transaction, Category, TransactionSchema, CategorySchema, UserSchema
 import os
 from datetime import datetime
@@ -18,20 +18,6 @@ def home():
     cat_data = db.session.query(Category, Transaction).join(Transaction).all()
     # all_categories = Transaction.objects.values('trans_category__name')
     all_categories = Category.query.all()
-
-
-    # new_trans_form = NewTransactionForm()
-    # if new_trans_form.validate_on_submit():
-    #     Transaction.transaction_new_entry(
-    #         amount = new_trans_form.amount.data,
-    #         trans_category = new_trans_form.trans_category.data,
-    #         transacted = new_trans_form.transacted.data,
-    #         user_id=current_user.id
-           
-    #     )
-    #     print(type(user_id))
-    #     flash('New Transaction Created')
-    #     return redirect(url_for('main.home') )
 
     form = TransactionForm()
     if form.validate_on_submit():
@@ -203,66 +189,3 @@ def create_a_user():
         data
     ),201
 
-
-
-
-
-
-#     # category=Category.query.get(id)
-#     # # cat_queryset=Transaction.query.all()
-#     # cat_data = db.session.query(Category, Transaction).join(Transaction).all()
-#     # serializer = CategorySchema()
-#     # data = serializer.dump(category)
-
-#     return jsonify(
-#         data
-#     ),200
-
-
-
-
-
-# @main.route("/transaction/<int:id>", methods=["PUT"])
-# def update_transaction(id):
-    
-
-# @main.route("/transaction/<int:id>", methods=["DELETE"])
-# def delete_transaction(id):
-#     pass
-
-
-
-
-
-
-# @main.route("/user", methods=["POST"])
-# def add_user():
-   
-#     #Create a User
-#     username = request.json['username']
-#     phone_number = request.json['phone_number']
-
-#     users = User(username, phone_number)
-#     db.session.add(users)
-#     db.session.commit()
-
-#     return user_schema.jsonify(users)
-
-# @main.route("/transaction", methods=["POST"])
-# def add_transaction():
-
-#     #Create a Transaction
-#     amount = request.json['amount']
-#     transacted =request.json['transacted']
-#     trans_category = request.json['trans_category']
-#     user_id = request.json['user_id']
-
-#     transactions = Transaction(amount, transacted, trans_category, user_id)
-#     db.session.add(transactions)
-#     db.session.commit()
-
-#     return transaction_schema.jsonify(transactions)
-    
-    
-    
-   

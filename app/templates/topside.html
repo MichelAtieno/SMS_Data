@@ -9,12 +9,12 @@
                     <div class="card-body">
                         <div class="row">
                             {% for cat in all_categories %}
-                            <div class="col-md-3 p-2">
+                            <div class="col-md-3 p-1">
                                 <a class="text-decoration-none text-dark" href="">
-                                    <div class="card my-card shadow text-center p-3">
-                                        <h4>{{ cat.id }}</h4>
+                                    <div class="card my-card shadow text-center p-1">
                                         
-                                        <a  href="{{url_for('main.category',id=cat.id)}}" class="card-body"><h3>{{ cat.name }}</h3> </a>
+                                        <h5>{{ cat.id }}.</h5>
+                                        <a  href="{{url_for('main.category',id=cat.id)}}" class="card-body"><h5> {{ cat.name }}</h5> </a>
                                     </div>
                                 </a>
                             </div>

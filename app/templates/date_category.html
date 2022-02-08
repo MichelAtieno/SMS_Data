@@ -1,15 +1,54 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
 
 {% block content %}
+
+
+<div class="container">
     <h2>Result Dates</h2>
     <p>Start Date: {{ startingdate}}</p>
     <p>End Date: {{ endingdate }}</p>
-    {% for transaction in transactions %}
-    {% if transaction.cat.id == category.id %}
-        <h4>Amount: {{ transaction.amount }} </h4>
-        <h4>Category:  {{ transaction.cat.name }} </h4>
-        <h4>Username: {{ transaction.user.username }}</h4>
-        <h4>Date of Transaction: {{ transaction.transacted }} </h4>
-    {% endif %}
-    {% endfor %}
+
+    <div class="row my-4">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                <div class="scrollable">
+                    <table class="table bg-white">
+                        <thead class="bg-info">
+                            <tr class="text-white">
+                                <th scope="col">Username </th>
+                                <th scope="col">Amount </th>
+                                <th scope="col">Date</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                       
+                            {% for transaction in transactions %}
+                            {% if transaction.cat.id == category.id %}
+                            <tr>
+                                <td><a href="{{url_for('main.user_profile',id=transaction.user.id)}}">{{ transaction.user.username }}</a></td> 
+                                <td>{{ transaction.amount }} </td>
+                                <td>{{ transaction.transacted }} </td>
+                            </tr>
+                           
+                            {% endif %}
+                            {% endfor %}
+
+                         
+                        
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-1">
+            </div>
+        </div>
+    
+
+
+</div>
+
 {% endblock %}

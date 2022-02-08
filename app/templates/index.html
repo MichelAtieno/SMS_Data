@@ -16,58 +16,50 @@
  
 <div class="container">
         <div class="row my-4">
-             <div class="col-md-3">
-
-               
-                
-                
-            </div>
-            <div class="col-md-3">
-
-                <h3>Select a date range for transactions</h3>
-
-                <form action="" method="POST" name="myform">
-                    {{ form.csrf_token }}
-                    {{ form.startdate.label }} {{ form.startdate(class='datepicker') }} {{ form.hidden_tag() }}
-                    {{ form.enddate.label }} {{ form.enddate(class='datepicker') }} {{ form.hidden_tag() }}
-                <p>
-                    {{ form.submit() }}
-                <p>
-                </form>
-
-
-
-               
-               
-            </div>
-            <div class="col-md-3">
-
-                <h3>Select a date range for categories</h3>
-
-                <form action="" method="POST" name="categoryform">
+            <div class="col-md-5">
+                <div class="container p-1">
+                    <h5>Select a date range for transactions</h5>
+                    <hr>
+                    <form action="" method="POST" name="myform">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            <label>{{ form.startdate.label }}</label>
+                             {{ form.startdate(class='datepicker') }} {{ form.hidden_tag() }}
+                            <br>
+                            <label>{{ form.enddate.label }}</label>
+                                {{ form.enddate(class='datepicker') }} {{ form.hidden_tag() }}
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn primary">{{ form.submit() }} </button>
+                        </div>
+                    </form>
+                </div>
+                <hr>
+                <div class="container">
+                    <h5>Select a date range for categories</h5>
+                    <hr>
+                    <form action="" method="POST" name="categoryform">
                     {{ cat_form.csrf_token }}
-                    {{ cat_form.startingdate.label }} {{ cat_form.startingdate(class='datepicker') }} {{ cat_form.hidden_tag() }}
-                    {{ cat_form.endingdate.label }} {{ cat_form.endingdate(class='datepicker') }} {{ cat_form.hidden_tag() }}
-                    {{ cat_form.trans_category }}
-                <p>
-                    {{ cat_form.submit() }}
-                <p>
+                    <div class="form-group">
+                        <label>{{ cat_form.startingdate.label }} </label>
+                        {{ cat_form.startingdate(class='datepicker') }} {{ cat_form.hidden_tag() }}
+                        <br>
+                        <label>{{ cat_form.endingdate.label }}</label>
+                        {{ cat_form.endingdate(class='datepicker') }} {{ cat_form.hidden_tag() }}
+                        <br>
+                        {{ cat_form.trans_category }}
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn primary">{{ cat_form.submit() }} </button>
+                    </div>
                 </form>
+                </div>
+                <hr>
 
-
-
-               
-               
             </div>
-            <div class="col-md-3">
-               
-            </div>
-            
-        </div>
-         <div class="row my-4">
-            
-            <div class="col-md-10">
-               <div class="scrollable">
+           
+            <div class="col-md-7">
+                <div class="scrollable">
                     <table class="table bg-white">
                         <thead class="bg-info">
                             <tr class="text-white">
@@ -93,6 +85,20 @@
                         </tbody>
                     </table>
                 </div>
+               
+
+
+
+               
+               
+            </div>
+           
+            
+        </div>
+         <div class="row my-4">
+            
+            <div class="col-md-10">
+              
             </div>
             <div class="col-md-1">
             </div>
