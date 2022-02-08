@@ -7,25 +7,25 @@ You can view project on https://sms-data.herokuapp.com/
 ### Description
  As a user of the application, you are able to:
 <ul>
-    <li>Sign in to the application. Register an account with a phone number, username and password. Login to view the dashboard.</li>
-    <li>You can view transactions of every user in the database.</li>
-    <li>You can view the API; given the routes in the description</li>
+    <li>sign in to the application. Register an account with a phone number, username and password. Login to view the dashboard.</li>
+    <li>view transactions of every user in the database.</li>
+    <li>view the API; given the routes in the description.</li>
 <ul>
 
 ### Website Routes
-    - /profile/<int:id> - User profile showing transactions related to particular user
-    - /cat/<int:id> - Category profile showing transactions related to particular category
-    - /date/<enddate>&<firstdate>&<transactions> - Once you submit the form on home page for querying transactions for particular period of time, you will be redirected to this page that displays transactions per selected period of time.
-    - /category/<startingdate>&<endingdate>&<int:id> - Once you submit the form on home page for querying categories for  a particular period of time, you will be redirected to this page that displays transactions per category per selected period of time.
+    - /profile/<int:id> - User profile showing transactions related to particular user.
+    - /cat/<int:id> - Category profile showing transactions related to particular category.
+    - /date/<enddate>&<firstdate>&<transactions> - Once you submit the form on home page for querying transactions for a particular period of time, you will be redirected to a page that displays transactions per selected period of time.
+    - /category/<startingdate>&<endingdate>&<int:id> - Once you submit the form on home page for querying categories for  a particular period of time, you will be redirected to a page that displays transactions per category per selected period of time.
 
 
 ### API routes
-    - /transactions - view all transactions
-    - /transactions/<int:id> - view transaction with assigned id
-    - /categories - view all categories
-    - /category/<int:id> - view category with assigned id
-    - /users - view all users
-    - /user/<int:id> - view user with assigned id
+    - /transactions - view all transactions.
+    - /transactions/<int:id> - view transaction with assigned id.
+    - /categories - view all categories.
+    - /category/<int:id> - view category with assigned id.
+    - /users - view all users.
+    - /user/<int:id> - view user with assigned id.
 
 ## Set-up and Installation
 ###     Prerequisites
